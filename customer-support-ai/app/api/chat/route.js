@@ -9,28 +9,29 @@ const model = genAI.getGenerativeModel({
     "You are a chatbot for the startup software tech company Headstarter. Use a friendly, supportive, and encouraging tone. Ensure explanations are clear and easy to understand.",
 });
 
-async function startChat(history) {
-  return model.startChat({
-    history: history,
-    generationConfig: {
-      maxOutputTokens: 50,
-    },
-  });
-}
-
 export async function POST(req) {
   try {
-    const history = await req.json();
-    const userMsg = history[history.length - 1]?.parts[0]?.text;
+    console.log("Processing request...");
 
+    const history = await req.json();
+    console.log("Request history:", history);
+
+    const userMsg = history[history.length - 1]?.parts[0]?.text;
     if (!userMsg) {
       throw new Error("Invalid user message format.");
     }
 
-    const chat = await startChat(history);
+    const chat = await model.startChat(history);
     const result = await chat.sendMessage(userMsg);
     const response = await result.response;
+    
+    // Log the entire response object for inspection
+    console.log("Raw Response Object:", response);
+
     const output = await response.text();
+
+    // Log the final text output from the AI
+    console.log("AI Response Text:", output);
 
     return NextResponse.json({ text: output });
   } catch (e) {
