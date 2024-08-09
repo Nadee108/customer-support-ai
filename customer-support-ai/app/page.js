@@ -29,13 +29,18 @@ export default function Home() {
 
       const data = await response.json();
 
-      // Correctly extract the text from the API response and add it to history
       setHistory((prevHistory) => [
         ...prevHistory,
         { role: "model", parts: [{ text: data.text }] },
       ]);
     } catch (error) {
       console.error("Error fetching chat response:", error);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      sendMessage();
     }
   };
 
@@ -46,6 +51,9 @@ export default function Home() {
       display="flex"
       alignItems="center"
       justifyContent="center"
+      sx={{
+        backgroundColor: '#1a2a6c', // Solid dark blue background
+      }}
     >
       <Stack
         direction="column"
@@ -53,7 +61,6 @@ export default function Home() {
         width="50%"
         height="80%"
         maxHeight="80%"
-        border="2px solid black"
         borderRadius={5}
         p={2}
         spacing={3}
@@ -62,11 +69,13 @@ export default function Home() {
           <Box
             display="flex"
             justifyContent="flex-end"
-            bgcolor="secondary.main"
-            borderRadius={10}
-            p={2}
+            sx={{
+              bgcolor: 'secondary.main', // Matches the API response box color
+              borderRadius: 10,
+              p: 2,
+            }}
           >
-            <Typography color="white">
+            <Typography color="white"> {/* Matching text color with API response */}
               {firstMessage}
             </Typography>
           </Box>
@@ -77,10 +86,12 @@ export default function Home() {
               justifyContent={textObject.role === 'user' ? 'flex-start' : 'flex-end'}
             >
               <Box
-                bgcolor={textObject.role === 'user' ? 'primary.main' : 'secondary.main'}
-                color="white"
-                borderRadius={10}
-                p={2}
+                sx={{
+                  bgcolor: textObject.role === 'user' ? 'lightgreen' : 'secondary.main',
+                  color: 'white', // Matching text color with API response
+                  borderRadius: 10,
+                  p: 2,
+                }}
               >
                 {textObject.parts[0].text}
               </Box>
@@ -92,9 +103,17 @@ export default function Home() {
             label="Message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={handleKeyPress} // Handles pressing Enter to send
             fullWidth
+            InputProps={{
+              style: { color: 'white' }, // White text color
+            }}
+            sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.1)', // Semi-transparent background for better visibility
+              borderRadius: 1,
+            }}
           />
-          <Button variant="contained" onClick={sendMessage}>
+          <Button variant="contained" onClick={sendMessage} sx={{ bgcolor: 'lightgreen', color: 'black' }}>
             Send
           </Button>
         </Stack>
