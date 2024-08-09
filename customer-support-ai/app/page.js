@@ -28,7 +28,12 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setHistory((prevHistory) => [...prevHistory, { role: "model", parts: [{ text: data.message }] }]);
+
+      // Correctly extract the text from the API response and add it to history
+      setHistory((prevHistory) => [
+        ...prevHistory,
+        { role: "model", parts: [{ text: data.text }] },
+      ]);
     } catch (error) {
       console.error("Error fetching chat response:", error);
     }
