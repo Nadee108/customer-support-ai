@@ -68,6 +68,7 @@ export default function Home() {
         <Stack direction="column" spacing={2} overflow="auto" mb={2}>
           <Box
             display="flex"
+<<<<<<< HEAD
             justifyContent="flex-start"
           >
             <Box
@@ -84,6 +85,18 @@ export default function Home() {
                 {firstMessage}
               </Typography>
             </Box>
+=======
+            justifyContent="flex-end"
+            sx={{
+              bgcolor: 'secondary.main', // Matches the API response box color
+              borderRadius: 10,
+              p: 2,
+            }}
+          >
+            <Typography color="white"> {/* Matching text color with API response */}
+              {firstMessage}
+            </Typography>
+>>>>>>> 41a47476c4a60588938200c7dfd09690e1f2a49c
           </Box>
           {history.map((textObject, index) => (
             <Box
@@ -94,11 +107,17 @@ export default function Home() {
               <Box
                 sx={{
                   bgcolor: textObject.role === 'user' ? 'lightgreen' : 'secondary.main',
+<<<<<<< HEAD
                   color: 'white',
                   borderRadius: 10,
                   p: 2,
                   maxWidth: '70%',
                   position: 'relative',
+=======
+                  color: 'white', // Matching text color with API response
+                  borderRadius: 10,
+                  p: 2,
+>>>>>>> 41a47476c4a60588938200c7dfd09690e1f2a49c
                 }}
               >
                 {textObject.parts[0].text}
